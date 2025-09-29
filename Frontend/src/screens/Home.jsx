@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { allFetchedProjectService , deleteProjectService } from '../API/ProjectService';
 import axios from '../config/axios';
+import { toast } from 'react-toastify';
 
 const Home = () => {
 
@@ -25,11 +26,14 @@ const Home = () => {
 
 
   const handleLogout = async () => {
+    const confirm = window.confirm("Are you sure you want to logout user?");
+    if (!confirm) return;
     try {
       await axios.get("/users/logout", { withCredentials: true });
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       navigate("/");
+      toast.success("User Logout successfully!");
     } catch (error) {
       console.log(error)
     }
@@ -42,6 +46,7 @@ const Home = () => {
     try {
       await deleteProjectService(id);
       setProject(prev => prev.filter(item => item._id !== id));
+      toast.success("Project delete successfully!");
     } catch (err) {
       console.error(err);
     }

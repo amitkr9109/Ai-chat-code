@@ -56,7 +56,6 @@ io.on('connection', socket => {
     socket.join(socket.roomId);
 
     socket.on('project-message', async data => {
-        console.log(data);
 
         const message = data.message;
         const aiPresentInMessage = message.includes("@ai");

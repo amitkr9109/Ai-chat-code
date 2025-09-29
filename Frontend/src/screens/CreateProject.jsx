@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createProjectService } from '../API/ProjectService';
+import { toast } from 'react-toastify';
 
 const CreateProject = () => {
   const [projectName, setProjectName] = useState('');
@@ -19,6 +20,7 @@ const CreateProject = () => {
       await createProjectService({ name: projectName });
       setProjectName('');
       navigate("/home");
+      toast.success("Project Create successfully");
     } catch (error) {
       console.error(error);
     }

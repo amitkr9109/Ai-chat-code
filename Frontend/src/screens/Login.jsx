@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../config/axios';
 import { UserContext } from '../context/user.context';
+import { toast } from 'react-toastify';
 
 const Login = () => {
 
@@ -18,16 +19,27 @@ const Login = () => {
         axios.post("/users/login",{
             email, password
         }).then((res) => {
-            console.log(res.data)
 
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify(res.data.user));
             setUser(res.data.user);
 
             navigate("/home");
+            toast.success("User Login successfully!");
 
         }).catch((err) => {
-            console.log(err.response.date)
+            if (err.response && err.response.data) {
+                if (Array.isArray(err.response.data.errors)) {
+                const validationMessages = err.response.data.errors.map(u => u.msg);
+                validationMessages.forEach(msg => toast.error(msg));
+                } else if (err.response.data.message) {
+                toast.error(err.response.data.message);
+                } else {
+                toast.error("Something went wrong");
+                }
+            } else {
+                toast.error("Server not responding");
+            }
         })
     }
 

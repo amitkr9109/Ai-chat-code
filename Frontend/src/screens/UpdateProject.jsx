@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { updateProjectService } from '../API/ProjectService';
+import { toast } from 'react-toastify';
 
 
 const UpdateProject = () => {
@@ -25,6 +26,7 @@ const UpdateProject = () => {
         try {
             const updated = await updateProjectService(projectId, { name: projectName });
             navigate('/home');
+            toast.success("Project update successfully!");
         } catch (error) {
             console.error(error);
         }

@@ -102,7 +102,6 @@ const Project = () => {
 
     axios.get(`/projects/all-read-project-user/${location.state?.project._id}`)
       .then(res => {
-        console.log("Full Response", res.data.project);
         setProject(res.data.project);  
       })
       .catch(err => {
@@ -215,8 +214,8 @@ const Project = () => {
             <button onClick={() => setSidePanelOpen(!sidePanelOpen)} className='cursor-pointer text-xl active:scale-110'><i className="ri-close-fill"></i></button>
           </header>
           <div className="user-show-container flex flex-col gap-2 px-4">
-            {project.users && project.users.map(user => {
-              return <div className="flex items-center gap-2 bg-slate-400 px-4 py-2 rounded-md cursor-pointer hover:bg-slate-500 transition-all active:scale-95">
+            {project.users && project.users.map((user, idx) => {
+              return <div key={idx} className="flex items-center gap-2 bg-slate-400 px-4 py-2 rounded-md cursor-pointer hover:bg-slate-500 transition-all active:scale-95">
                 <div className="w-fit h-fit flex items-center justify-center text-white p-4 aspect-square rounded-full bg-gray-600 cursor-pointer text-xl"><i className='ri-user-fill absolute'></i></div>
                 <h1 className='font-semibold'>{user.email}</h1>
               </div>
