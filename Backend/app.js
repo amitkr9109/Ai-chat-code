@@ -15,6 +15,7 @@ const app = express();
 
 app.use(cors({
     origin: [
+        'https://ai-chat-code-frontend.onrender.com',
         'http://localhost:5173'
     ],
     credentials: true
