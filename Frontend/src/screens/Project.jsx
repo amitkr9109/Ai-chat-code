@@ -28,8 +28,6 @@ const Project = () => {
   const messageBox = React.createRef();
 
 
-  // console.log(location.state?.project);
-
   const [sidePanelOpen, setSidePanelOpen] = useState(false);
   const [project, setProject] = useState(location.state?.project);
   const [message, setMessage] = useState("");
@@ -43,7 +41,6 @@ const Project = () => {
   const [iframeUrl, setIframeUrl] = useState(null);
   const [runProcess, setRunProcess] = useState(null);
 
-  // console.log(location.state?.project._id);
 
   async function handleSendMessage () {
 
@@ -60,7 +57,13 @@ const Project = () => {
 
   function writeAiMessage (message){
 
-    const messageObjects = JSON.parse(message)
+    let messageObjects;
+
+    try {
+      messageObjects = JSON.parse(message);
+    } catch {
+      messageObjects = { text: message };
+    }
 
     return(
       <div className="overflow-auto bg-slate-900 text-white rounded-md p-2 scroll-auto">
@@ -86,18 +89,21 @@ const Project = () => {
     }
 
     receiveMessage("project-message", data => {
-      console.log(data);
-      console.log(JSON.parse(data.message));
 
-      const message = JSON.parse(data.message);
+      let parsedMessage;
 
-      webContainer?.mount(message.fileTree)
-
-      if(message.fileTree){
-        setFileTree(message.fileTree)
+      try {
+        parsedMessage = JSON.parse(data.message);
+      } catch (err) {
+        parsedMessage = { text: data.message };
       }
 
-      setAllMessages(prevMessages => [...prevMessages, data])
+      if(parsedMessage.fileTree){
+        webContainer?.mount(parsedMessage.fileTree);
+        setFileTree(parsedMessage.fileTree);
+      }
+
+      setAllMessages(prevMessages => [...prevMessages, { ...data, message: parsedMessage.text || data.message }]);
     })
 
     axios.get(`/projects/all-read-project-user/${location.state?.project._id}`)

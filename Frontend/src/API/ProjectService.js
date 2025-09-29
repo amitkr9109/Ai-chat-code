@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import axios from "../config/axios";
 
 
@@ -6,8 +7,22 @@ export const createProjectService = async (data) => {
     const res = await axios.post("/projects/create", data);
     return res?.data?.project;
   } catch (error) {
-    console.error(error);
-    throw error.response?.data?.error || "Failed to create project";
+     if (error.response && error.response.data) {
+      if (Array.isArray(error.response.data.errors)) {
+        error.response.data.errors.forEach(err => toast.error(err.msg));
+        throw error.response.data.errors.map(err => err.msg).join(", ");
+      }
+      else if (typeof error.response.data === "string") {
+        toast.error(error.response.data);
+        throw error.response.data;
+      }
+      else if (error.response.data.message) {
+        toast.error(error.response.data.message);
+        throw error.response.data.message;
+      }
+    } else {
+      toast.error("Server not responding");
+    }
   }
 };
 

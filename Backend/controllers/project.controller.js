@@ -20,7 +20,6 @@ export const createProjectController = async (req, res) => {
         res.status(201).json(newProject);
 
     } catch (error) {
-        console.log(error)
         res.status(400).send(error.message);
     }
 
@@ -36,7 +35,6 @@ export const getAllProjectController = async (req, res) => {
         return res.status(200).json({ projects: allUserProjects });
 
     } catch (error) {
-        console.log(error);
         res.status(400).json({error: error.message});
     }
 };
@@ -64,7 +62,6 @@ export const addUserToProjectController = async (req, res) => {
         return res.status(200).json({project});
 
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 
@@ -85,7 +82,6 @@ export const getProjectController = async (req, res) => {
        res.status(200).json({ message: "Project fetched successfully", projectData: project });
 
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 };
@@ -105,7 +101,6 @@ export const updateProjectController = async (req, res) => {
         res.status(200).json({ message: "Project updated successfully", updateData: project });
 
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 
@@ -126,7 +121,6 @@ export const deleteProjectController = async (req, res) => {
        res.status(200).json({ message: "Project deleted successfully", projectDeleteData: project });
 
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 };
@@ -143,7 +137,6 @@ export const getProjectByIdController = async (req, res) => {
         return res.status(200).json({ project });
 
     } catch (error) {
-        console.log(error);
         res.status(400).json({ error: error.message });
     }
 
